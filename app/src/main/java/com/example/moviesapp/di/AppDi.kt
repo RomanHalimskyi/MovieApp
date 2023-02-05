@@ -3,6 +3,8 @@ package com.example.moviesapp.di
 import com.example.moviesapp.data.network.MovieDbApi
 import com.example.moviesapp.data.repository.MovieDbRepositoryImpl
 import com.example.moviesapp.domain.repository.MovieDbRepository
+
+import com.example.moviesapp.presentation.DetailsViewModel
 import com.example.moviesapp.presentation.MainViewModel
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
@@ -42,14 +44,6 @@ val networkModule = module {
     }
 
     single { getInstance() }
-
-//    single<String?> {
-//        MovieDbRepositoryImpl(movieDbApi = get()).toString()
-//    }
-//
-//    val repositoryModule = module {
-//        factory { MovieDbRepository() }
-//    }
 }
 
 val repositoryModule = module {
@@ -59,5 +53,9 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModel<MainViewModel> {
         MainViewModel(movieRepository = get())
+    }
+
+    viewModel<DetailsViewModel> {
+        DetailsViewModel(movieRepository = get())
     }
 }

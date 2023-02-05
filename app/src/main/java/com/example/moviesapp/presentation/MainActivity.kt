@@ -15,7 +15,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private  val viewModel by viewModel<MainViewModel>()
+    private  val mainViewModel by viewModel<MainViewModel>()
+    private  val detailViewModel by viewModel<DetailsViewModel>()
 
     private lateinit var navController: NavController
 
@@ -24,17 +25,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-//        supportFragmentManager
-//            .beginTransaction()
-//            .replace(R.id.placeHolder, MainFragment.newInstance())
-//            .commit()
-        Log.e("AAA", "asdfgewqaevdxvsdvx")
-
-        val k = viewModel.getMoviesListResults(5)
-        viewModel.searchList.observe(this, Observer {
+        val k = mainViewModel.getMoviesListResults(5)
+        mainViewModel.searchList.observe(this, Observer {
             it.get(1).overview
-            Log.e("AAA", it.get(1).title + "hfjdkls;")
+            Log.e("AAA", it.get(1).title)
+        })
+
+        detailViewModel.getMoviesListResults(586)
+        val t = detailViewModel.getMoviesListResults(586)
+        detailViewModel.searchList.observe(this, Observer {
+            it.title
+            Log.e("AAA", it.title)
         })
 
     }

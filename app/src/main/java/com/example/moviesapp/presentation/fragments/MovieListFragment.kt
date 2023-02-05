@@ -1,6 +1,7 @@
 package com.example.moviesapp.presentation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviesapp.R
 
 import com.example.moviesapp.databinding.FragmentMovieListBinding
 import com.example.moviesapp.presentation.MainViewModel
 import com.example.moviesapp.presentation.adapters.ListOfMoviesAdapter
-import com.example.moviesapp.presentation.adapters.MoviesListAdapter
-
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieListFragment : Fragment(){
 
@@ -30,7 +28,6 @@ class MovieListFragment : Fragment(){
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentMovieListBinding.inflate(layoutInflater, container, false)
-        // Inflate the layout for this fragment
         return binding.root
     }
 
@@ -42,7 +39,10 @@ class MovieListFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRcView()
+
+        val k = adapter.itemCount
         model.searchList.observe(viewLifecycleOwner){
+            Log.e("AAA", it[5].title)
             adapter.submitList(it)
         }
 
@@ -50,9 +50,10 @@ class MovieListFragment : Fragment(){
             requireActivity().findNavController(R.id.nav_host_fragment_main).navigate(R.id.action_movieListFragment_to_detailsFragment)
         }
 
+
     }
     private fun initRcView() = with(binding){
-        rcView.layoutManager = LinearLayoutManager(activity)
+        rcView.layoutManager = GridLayoutManager(activity, 2)
         adapter = ListOfMoviesAdapter(null)
         rcView.adapter = adapter
 
