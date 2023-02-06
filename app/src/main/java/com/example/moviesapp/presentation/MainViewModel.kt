@@ -10,16 +10,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.MoviesApp
 import com.example.moviesapp.data.models.MoviesListModel.MoviesList
 import com.example.moviesapp.data.models.MoviesListModel.MoviesListDetail
+import com.example.moviesapp.domain.Resource
 import com.example.moviesapp.domain.repository.MovieDbRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val movieRepository: MovieDbRepository): ViewModel() {
 
     var page = 1
-    var movieDbResponse: MoviesList? = null
+    var movieDbResponse: Resource<MoviesList?>? = null
 
-    private val _searchList = MutableLiveData<MoviesList>()
-    val searchList: LiveData<MoviesList>
+    private val _searchList = MutableLiveData<Resource<MoviesList?>?>()
+    val searchList: LiveData<Resource<MoviesList?>?>
         get() = _searchList
 
     private val _loading = MutableLiveData<Boolean>()
@@ -35,22 +36,18 @@ class MainViewModel(private val movieRepository: MovieDbRepository): ViewModel()
             _loading.value = true
             try {
                 val res = movieRepository.getMovieList(page = page)
-
                 page++
 
                 if(movieDbResponse == null){
                     movieDbResponse = res
-
-                    _searchList.value = movieDbResponse!!
+                    _searchList.value = movieDbResponse
                 }else{
-                    val oldMovies = movieDbResponse
+                    val oldMovies = movieDbResponse!!
                     val newMovies = res
-
-                    oldMovies!!.moviesListDetails.addAll(newMovies!!.moviesListDetails)
-
-                    _searchList.value = oldMovies!!
+                    oldMovies!!.data!!.moviesListDetails.addAll(newMovies!!.data!!.moviesListDetails)
+                    _searchList.value = oldMovies
                 }
-                Log.e("AAA", "succses")
+                Log.e("AAA", res.message.toString())
             } catch(e:Exception){
                 Log.i("popular exeception", e.message.toString())
             }

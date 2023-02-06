@@ -3,35 +3,38 @@ package com.example.moviesapp.presentation.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
-import com.example.moviesapp.data.models.MoviesListModel.MoviesList
 import com.example.moviesapp.data.models.MoviesListModel.MoviesListDetail
 import com.example.moviesapp.databinding.ListMoviesBinding
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
+import com.example.moviesapp.domain.util.Constants.IMAGE_BASE_URL
+import com.example.moviesapp.domain.util.Util
 import com.squareup.picasso.Picasso
 
 
-class ListOfMoviesAdapter(val listener: Listener?): ListAdapter<MoviesListDetail, ListOfMoviesAdapter.Holder>(Comparator()) {
+class ListOfMoviesAdapter(val listener: Listener): ListAdapter<MoviesListDetail, ListOfMoviesAdapter.Holder>(Comparator()) {
 
-    class Holder(view: View, val listener: Listener?): RecyclerView.ViewHolder(view){
+    class Holder(view: View, val listener: Listener): RecyclerView.ViewHolder(view){
         val binding = ListMoviesBinding.bind(view)
         var itemTemp: MoviesListDetail? = null
+
         init {
             itemView.setOnClickListener{
                 itemTemp?.let { it1 -> listener?.onClick(it1) }
             }
         }
+
         fun bind(item: MoviesListDetail) = with(binding) {
             itemTemp = item
             tvTitle.text = item.title
             tvRealeseDate.text = item.releaseDate
             tvMovieRaiting.text = item.voteAverage.toString()
             tvMovieGenre.text = item.genreIds.toString()
-
-            Picasso.get().load("https://image.tmdb.org/t/p/w500" + item.posterPath).into(im)
+            val genres = item.let { Util.getGenresFromIds(item.genreIds) }
+            tvMovieGenre.text = genres.toString().substring(1,genres.toString().lastIndex)
+            Picasso.get().load(IMAGE_BASE_URL + item.posterPath).into(im)
         }
     }
 

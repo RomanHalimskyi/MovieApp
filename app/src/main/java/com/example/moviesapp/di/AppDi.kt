@@ -3,6 +3,7 @@ package com.example.moviesapp.di
 import com.example.moviesapp.data.network.MovieDbApi
 import com.example.moviesapp.data.repository.MovieDbRepositoryImpl
 import com.example.moviesapp.domain.repository.MovieDbRepository
+import com.example.moviesapp.domain.util.Constants.BASE_URL
 
 import com.example.moviesapp.presentation.DetailsViewModel
 import com.example.moviesapp.presentation.MainViewModel
@@ -36,7 +37,7 @@ val networkModule = module {
         }
         httpClient.addInterceptor(logging)
         return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
             .build()

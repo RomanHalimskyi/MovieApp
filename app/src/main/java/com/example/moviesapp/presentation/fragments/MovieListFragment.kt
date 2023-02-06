@@ -7,20 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
-
+import com.example.moviesapp.data.models.MoviesListModel.MoviesListDetail
 import com.example.moviesapp.databinding.FragmentMovieListBinding
+import com.example.moviesapp.domain.util.Constants.ITEM_COUNT
 import com.example.moviesapp.presentation.MainViewModel
 import com.example.moviesapp.presentation.adapters.ListOfMoviesAdapter
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MovieListFragment : Fragment(){
+
+class MovieListFragment : Fragment(), ListOfMoviesAdapter.Listener{
 
     private lateinit var adapter: ListOfMoviesAdapter
     private lateinit var binding: FragmentMovieListBinding
@@ -46,17 +47,25 @@ class MovieListFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         initRcView()
 
+
+
         model.getPage(1)
 
         val k = adapter.itemCount
+
         model.searchList.observe(viewLifecycleOwner){
+            adapter.submitList(it!!.data!!.moviesListDetails.toList())
 
-            Log.e("AAA", it.moviesListDetails[6].title)
-            adapter.submitList(it.moviesListDetails.toList())
+            if(it.data != null){
+                Toast.makeText(requireActivity(), "loaded successfully", Toast.LENGTH_SHORT).show()
+            } else{
+                Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
+            }
 
-            val totalPages = it.totalResults / 40 + 2
+            val totalPages = it.data!!.totalResults / ITEM_COUNT + 2
             isLastPage = model.page == totalPages
         }
+
         model.loading.observe(viewLifecycleOwner){
             if(it){
                 binding.progressBar.visibility = View.VISIBLE
@@ -64,13 +73,10 @@ class MovieListFragment : Fragment(){
                 binding.progressBar.visibility = View.GONE
             }
         }
-        binding.next.setOnClickListener{
-            requireActivity().findNavController(R.id.nav_host_fragment_main).navigate(R.id.action_movieListFragment_to_detailsFragment)
-        }
     }
     private fun initRcView() = with(binding){
         rcView.layoutManager = GridLayoutManager(activity, 2)
-        adapter = ListOfMoviesAdapter(null)
+        adapter = ListOfMoviesAdapter(this@MovieListFragment)
         rcView.adapter = adapter
         rcView.addOnScrollListener(this@MovieListFragment.scrollListener)
     }
@@ -100,8 +106,7 @@ class MovieListFragment : Fragment(){
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
 
-            // create constant for hardcode num (40)
-            val isTotalMoreThatVisible = totalItemCount >= 40
+            val isTotalMoreThatVisible = totalItemCount >= ITEM_COUNT
 
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThatVisible && isScrolling
@@ -113,5 +118,13 @@ class MovieListFragment : Fragment(){
                 recyclerView.setPadding(0,0,0,0)
             }
         }
+    }
+
+    override fun onClick(item: MoviesListDetail) {
+        val bundle = Bundle()
+        bundle.putInt("SelectedMovieId", item.id )
+        item.id
+
+        requireActivity().findNavController(R.id.nav_host_fragment_main).navigate(R.id.action_movieListFragment_to_detailsFragment, bundle)
     }
 }

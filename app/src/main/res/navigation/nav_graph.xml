@@ -12,6 +12,10 @@
         <action
             android:id="@+id/action_detailsFragment_to_movieListFragment"
             app:destination="@id/movieListFragment" />
+        <argument
+            android:name="SelectedMovieId"
+            app:argType="integer"
+            android:defaultValue="1" />
     </fragment>
     <fragment
         android:id="@+id/movieListFragment"

@@ -24,17 +24,13 @@ class DetailsViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val page = 1
 
-    init {
-        getMoviesListResults(586)
-    }
-    fun getMoviesListResults(page: Int) {
+    fun getMoviesListResults(id: Int) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val res = movieRepository.getMovieDetail(id = page)
-                _searchList.value = res!!
+                val res = movieRepository.getMovieDetail(id = id)
+                _searchList.value = res!!.data!!
             } catch(e:Exception){
 
                 Log.i("popular exeception", e.message.toString())
