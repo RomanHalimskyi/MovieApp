@@ -1,5 +1,6 @@
 package com.example.moviesapp.data.repository
 
+import com.example.moviesapp.data.models.MovieDetailsModel.MovieDetails
 import com.example.moviesapp.data.models.MoviesListModel.MoviesList
 import com.example.moviesapp.data.network.MovieDbApi
 import com.example.moviesapp.domain.repository.MovieDbRepository
@@ -11,7 +12,7 @@ class MovieDbRepositoryImpl(
         return movieDbApi.getMoviesListData(page)
     }
 
-//    suspend fun getSearchResults(query: String) : SearchResult?{
-//        return imdbService.getSearchResults(query,true)
-//    }
+    override suspend fun getMovieDetail(id: Int): MovieDetails? {
+        return movieDbApi.getMovieDetailData(id)
+    }
 }

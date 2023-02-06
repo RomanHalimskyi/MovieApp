@@ -3,21 +3,30 @@ package com.example.moviesapp.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.moviesapp.R
+import com.example.moviesapp.data.models.MoviesListModel.MoviesListDetail
 
 import com.example.moviesapp.databinding.ActivityMainBinding
 import com.example.moviesapp.databinding.FragmentMovieListBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private  val viewModel by viewModel<MainViewModel>()
+    private  val mainViewModel by viewModel<MainViewModel>()
+    private  val detailViewModel by viewModel<DetailsViewModel>()
 
     private lateinit var navController: NavController
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,17 +34,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-//        supportFragmentManager
-//            .beginTransaction()
-//            .replace(R.id.placeHolder, MainFragment.newInstance())
-//            .commit()
-        Log.e("AAA", "asdfgewqaevdxvsdvx")
-
-        val k = viewModel.getMoviesListResults(5)
-        viewModel.searchList.observe(this, Observer {
-            it.get(1).overview
-            Log.e("AAA", it.get(1).title + "hfjdkls;")
-        })
+//        mainViewModel.getMoviesListResults()
+        mainViewModel.getPage(1)
+        detailViewModel.getMoviesListResults(586)
 
     }
 
