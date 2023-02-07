@@ -6,26 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import com.example.moviesapp.R
-
 import com.example.moviesapp.databinding.FragmentDetailsBinding
 import com.example.moviesapp.domain.util.Constants.IMAGE_BASE_URL
 import com.example.moviesapp.domain.util.Util
 import com.example.moviesapp.presentation.DetailsViewModel
-
 import com.squareup.picasso.Picasso
-
 
 class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
     private  val model: DetailsViewModel by activityViewModels()
-    lateinit var navController: NavController
 
     private var genres: ArrayList<String>? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +40,7 @@ class DetailsFragment : Fragment() {
 
         model.getMoviesListResults(id = id!!)
 
-        model.searchList.observe(viewLifecycleOwner){
+        model.details.observe(viewLifecycleOwner){
             binding.tvTitle.text = it.title
 
             genres = it.genres?.let { Util.getGenres(it) }

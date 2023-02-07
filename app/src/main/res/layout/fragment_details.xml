@@ -14,12 +14,24 @@
         android:visibility="gone">
 
     </ProgressBar>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        >
+        android:background="@color/dark_cyan"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#00911C1C"
+            android:src="@drawable/rounded"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_desctiption_full"
+            app:layout_constraintEnd_toEndOf="@+id/tv_desctiption_full"
+            app:layout_constraintStart_toStartOf="@+id/tv_desctiption_full"
+            app:layout_constraintTop_toTopOf="@+id/tv_desctiption_full" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -65,9 +77,9 @@
             android:id="@+id/tv_desctiption_full"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:text="A tale of outsized ambition and outrageous excess, it traces the rise and fall of multiple characters during an era of unbridled decadence and depravity in early Hollywood."
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"

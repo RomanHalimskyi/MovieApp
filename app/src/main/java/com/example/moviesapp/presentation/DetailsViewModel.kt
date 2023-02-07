@@ -5,20 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviesapp.data.models.MovieDetailsModel.MovieDetails
-import com.example.moviesapp.data.models.MoviesListModel.MoviesListDetail
-import com.example.moviesapp.databinding.ActivityMainBinding
+import com.example.moviesapp.data.models.movieDetailsModel.MovieDetails
 import com.example.moviesapp.domain.repository.MovieDbRepository
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailsViewModel(
     private val movieRepository: MovieDbRepository
 ) : ViewModel() {
 
-    private val _searchList = MutableLiveData<MovieDetails>()
-    val searchList: LiveData<MovieDetails>
-        get() = _searchList
+    private val _details = MutableLiveData<MovieDetails>()
+    val details: LiveData<MovieDetails>
+        get() = _details
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
@@ -30,10 +27,10 @@ class DetailsViewModel(
             _loading.value = true
             try {
                 val res = movieRepository.getMovieDetail(id = id)
-                _searchList.value = res!!.data!!
+                _details.value = res!!.data!!
             } catch(e:Exception){
 
-                Log.i("popular exeception", e.message.toString())
+                Log.i("API DETAILS ERROR", e.message.toString())
             }
             finally {
                 _loading.value = false

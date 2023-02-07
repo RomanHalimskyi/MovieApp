@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
-import com.example.moviesapp.data.models.MoviesListModel.MoviesListDetail
+import com.example.moviesapp.data.models.moviesListModel.MoviesListDetail
 import com.example.moviesapp.databinding.ListMoviesBinding
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
-import com.example.moviesapp.domain.util.Constants.IMAGE_BASE_URL
 import com.example.moviesapp.domain.util.Util
 import com.squareup.picasso.Picasso
 
@@ -34,7 +33,7 @@ class ListOfMoviesAdapter(val listener: Listener): ListAdapter<MoviesListDetail,
             tvMovieGenre.text = item.genreIds.toString()
             val genres = item.let { Util.getGenresFromIds(item.genreIds) }
             tvMovieGenre.text = genres.toString().substring(1,genres.toString().lastIndex)
-            Picasso.get().load(IMAGE_BASE_URL + item.posterPath).into(im)
+            Picasso.get().load("https://image.tmdb.org/t/p/w500" + item.posterPath).into(im)
         }
     }
 
@@ -50,7 +49,8 @@ class ListOfMoviesAdapter(val listener: Listener): ListAdapter<MoviesListDetail,
             oldItem: MoviesListDetail,
             newItem: MoviesListDetail,
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
+
         }
 
     }

@@ -1,7 +1,7 @@
 package com.example.moviesapp.data.network
 
-import com.example.moviesapp.data.models.MovieDetailsModel.MovieDetails
-import com.example.moviesapp.data.models.MoviesListModel.MoviesList
+import com.example.moviesapp.data.models.movieDetailsModel.MovieDetails
+import com.example.moviesapp.data.models.moviesListModel.MoviesList
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
