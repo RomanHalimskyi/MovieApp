@@ -4,9 +4,9 @@ Technology stack
 - Coroutines.
 - Data and Sealed classes in Kotlin.
 - Dependency injection with Koin.
-- Pecasso.
+- Picasso.
 - Retrofit.
-- MVVM/MVI.
+- MVVM.
 - Navigation graph.
 - DataBinding.
 
